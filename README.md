@@ -247,5 +247,3 @@ To evolve this into a production-grade automation suite:
 8. **Add linting and formatting** (`ruff`, `black`) for maintainability.
 
 ---
-
-If you want, I can also generate a **next-step refactor plan** and scaffold a cleaner `tests/` layout with Page Objects and configurable environments.
