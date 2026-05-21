@@ -1,222 +1,251 @@
-# Label-Hub-Selenium-Automation
+# Label-Hub Selenium Automation
 
-This repository focuses on automating test cases for the Label Hub system using Selenium.
-
----
-
-## Use Cases Covered with the Test Cases
-
-### Login Functionality:
-- **Invalid Login**: Verify prevention of invalid login attempts and display of appropriate error messages.
-- **Missing Credentials**: Test login behavior when credentials (email or password) are missing.
-- **Successful Login**: Validate the ability to login with valid credentials.
-
-### User Management:
-- **User Creation**: Confirm user creation with valid input data.
-- **Duplicate Username**: Test prevention of creating duplicate usernames.
-- **User Deletion**: Verify proper handling and functionality when deleting a user.
-
-### Project Management:
-- **Project Creation**: Ensure the creation of projects and prevent duplicate project names.
-- **Project Deletion**: Validate that project deletion functionality works as expected.
-
-### File Management and Annotation:
-- **File Upload**: Test file upload functionality, including format validation.
-- **Annotator Interactions**: Validate the actions and data integrity of annotators during project interactions.
-
-### System Configuration and Data Viewing:
-- **Configuration Adjustments**: Verify that system configuration can be modified as required.
-- **Secure Data Viewing**: Ensure that only authorized users can view sensitive project data.
+Selenium-based UI automation scripts for validating core workflows in the **Label Hub** platform, including authentication, user management, project management, file upload, annotation/validation flows, and admin operations.
 
 ---
 
-## Test Case Design Strategy
-
-### Comprehensive Coverage:
-The test cases provide broad coverage across multiple key functionalities, including:
-- Authentication
-- User and project management
-- File handling
-- System configuration
-
-### Negative Testing:
-Many test cases focus on **negative scenarios** (e.g., attempting to create users with invalid data) to ensure that error handling mechanisms are in place and function correctly.
-
-### Role-Based Testing:
-Different roles, such as **Admin**, **Annotator**, and **Validator**, are thoroughly tested to ensure proper role-based access control and functionality.
-
-### Edge Cases:
-Special attention is given to edge cases, such as:
-- Overly long names
-- Invalid email formats
-- Incorrect password requirements
+## Table of Contents
+- [Overview](#overview)
+- [Repository Structure](#repository-structure)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Test Environment Assumptions](#test-environment-assumptions)
+- [How to Run](#how-to-run)
+- [Test Coverage](#test-coverage)
+- [Known Limitations](#known-limitations)
+- [Troubleshooting](#troubleshooting)
+- [Recommendations for Improvement](#recommendations-for-improvement)
 
 ---
 
-## Test Case Implementation Details
+## Overview
 
-### Selenium Automation:
-Selenium, a browser automation tool, is used to implement all test cases, allowing for dynamic interaction with the web application.
+This repository contains Python Selenium scripts intended to automate end-to-end testing of Label Hub web workflows hosted at:
 
-### Modular Design:
-Each test case is written as a **separate function** (e.g., `Login`, `UserCreate`, `ProjectCreate`) to promote **reusability** and **readability**. This modular approach ensures that test cases are easier to maintain and scale.
+- `http://182.163.99.86/login`
 
+The automation targets realistic role-based scenarios for:
 
-# Test Cases
+- **Admin** operations (login, users, projects, configuration/data actions)
+- **Annotator** workflow (project search, annotation actions, logout)
+- **Validator** workflow (validation actions with and without edits)
 
-This document lists and describes various test cases for user login, user creation, project management, and other operations in the system.
+The suite includes both:
 
-## User Login
-
-1. **Case 1: Wrong ID**
-   - Description: Attempt to login with an incorrect email ID.
-
-2. **Case 2: Without Password**
-   - Description: Attempt to login with an email but without providing a password.
-
-3. **Case 3: Without ID and Password**
-   - Description: Attempt to login with both email and password fields left empty.
-
-4. **Case 4: Without ID**
-   - Description: Attempt to login without providing an email but with a password.
-
-5. **Case 5: Only Part of the Email**
-   - Description: Attempt to login with an incomplete email.
-
-6. **Case 6: Correct ID and Password**
-   - Description: Successfully login with the correct email and password.
-
-## User Creation
-
-7. **Case 7: Create User without Role**
-   - Description: Attempt to create a user without specifying a role.
-
-8. **Case 8: Create User without Email**
-   - Description: Attempt to create a user without providing an email.
-
-9. **Case 9: Create User without Password Requirement**
-   - Description: Attempt to create a user with an inadequate password.
-
-10. **Case 10: Create User without Name**
-    - Description: Attempt to create a user without providing a name.
-
-11. **Case 11: Create User with All Valid Info**
-    - Description: Successfully create a user with all required and valid information.
-
-12. **Case 12: Create User with Password Size >14**
-    - Description: Create a user with an excessively long password.
-
-13. **Case 13: Create User with Big Name**
-    - Description: Create a user with an overly long name.
-
-14. **Case 14: Create User without Gender**
-    - Description: Attempt to create a user without specifying a gender.
-
-15. **Case 15: Create User without Valid Email**
-    - Description: Attempt to create a user with an invalid email format.
-
-16. **Case 16: Create User with Non-Integer Mobile Number**
-    - Description: Attempt to create a user with an invalid mobile number format.
-
-17. **Case 17: Delete a User**
-    - Description: Successfully delete a user.
-
-## Logout
-
-18. **Case 18: Logout**
-    - Description: Successfully log out.
-
-## Project Management
-
-19. **Case 19: Create User with Mobile Number <11 Digits**
-    - Description: Attempt to create a user with a short mobile number.
-
-20. **Case 20: Create User with Mobile Number >11 Digits**
-    - Description: Attempt to create a user with a long mobile number.
-
-21. **Case 21: Create New Project**
-    - Description: Successfully create a new project.
-
-22. **Case 22: Create Duplicate Project**
-    - Description: Attempt to create a project with a name that already exists.
-
-23. **Case 23: Delete Project**
-    - Description: Successfully delete a project.
-
-24. **Case 24: File Upload in Project**
-    - Description: Successfully upload a file to a project.
-
-## Role-Based Actions
-
-25. **Case 25: Annotator**
-    - Description: Annotator logs in, searches for a project, annotates, and logs out.
-
-26. **Case 26: Validator (No Edit)**
-    - Description: Validator logs in, searches for a project, performs validation without edits, and logs out.
-
-27. **Case 27: Validator (Edit)**
-    - Description: Validator logs in, searches for a project, performs validation with edits, and logs out.
-
-28. **Case 28: Rejected Annotator**
-    - Description: Annotator logs in, searches for a rejected project, reviews rejection, and logs out.
-
-## Admin Actions
-
-29. **Case 29: Configuration**
-    - Description: Admin logs in and configures settings.
-
-30. **Case 30: Data View**
-    - Description: Admin logs in and views project data.
+1. **Reusable procedural helpers** (in `final1.py`) for common actions.
+2. **`unittest`-based automated test class** (in `final2.py`) focused on annotator login/action/logout.
 
 ---
 
-These test cases ensure robust testing of user, project, and admin operations within the system.
+## Repository Structure
 
+```text
+.
+├── README.md
+├── final1.py   # Procedural Selenium action library + flow functions
+└── final2.py   # unittest-based annotator scenario tests
+```
 
-# Test report:
+### `final1.py`
+Contains helper functions for major system actions, including:
 
-Total Tests Conducted: 30
+- Session setup with Selenium WebDriver (Edge)
+- Login/Logout
+- User navigation and user creation/deletion
+- Project creation/deletion
+- File upload flow
+- Project search
+- Annotation and validation actions
 
-# Test Results
+### `final2.py`
+Contains a `unittest.TestCase` (`annotator`) that automates:
 
-## Passed Tests
-27 tests passed successfully, demonstrating expected outcomes in functionalities such as:
-- User login
-- User creation
-- Project management
-- File uploads
+- Annotator login
+- Project search and annotation interaction
+- Logout verification
 
-## Failed Tests
-3 tests failed, as detailed below:
+---
 
-### Bug Details
+## Prerequisites
 
-1. **Default User Role Assignment**
-   - **Issue**: When creating a user without specifying a role, the system defaulted to the "guest" role.
-   - **Expected Behavior**: Either make the role selection mandatory or clearly indicate the default role.
-   - **Recommendation**: Modify the system to enforce role selection or clarify the default assignment.
+Before running scripts, ensure you have:
 
-2. **Phone Number Validation**
-   - **Issue**: Entering an incorrect phone number format caused the website to crash.
-   - **Expected Behavior**: The system should validate phone numbers and handle incorrect inputs gracefully.
-   - **Recommendation**: Implement frontend validation for phone numbers and improve backend error handling to prevent crashes.
+- **Python 3.9+** (recommended)
+- **Google Chrome** (for `final2.py`) and matching **ChromeDriver** available in PATH
+- **Microsoft Edge** (for `final1.py`) and matching **Edge WebDriver** available in PATH
+- Access to the target Label Hub server (`http://182.163.99.86`)
+- Test user credentials with proper role permissions
 
-3. **Performance Issues**
-   - **Issue**: The website occasionally experienced slow loading times and displayed 404 errors.
-   - **Expected Behavior**: The website should load efficiently and avoid such errors.
-   - **Recommendation**: Investigate the server-side issues or configuration inefficiencies causing the slow loading and 404 errors.
+Python packages required:
 
-## Recommendations
+- `selenium`
+- `pynput`
 
-1. **Role Selection Enforcement**
-   - Ensure that role selection is mandatory during user creation or provide clearer feedback on default role assignment.
+---
 
-2. **Input Validation and Error Handling**
-   - Implement robust frontend validation for phone numbers and improve backend error handling to prevent crashes.
+## Installation
 
-3. **Server and Performance Review**
-   - Investigate and resolve the issues causing slow loading times and 404 errors to enhance the stability and performance of the website.
+1. Clone the repository:
 
-## Conclusion
-The majority of tests confirmed that the system's core functionalities are working as intended. However, addressing the identified bugs and performance issues is essential for providing a smoother and more reliable user experience.
+```bash
+git clone <your-repo-url>
+cd Label-Hub-Selenium-Automation
+```
 
+2. (Recommended) Create and activate a virtual environment:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Linux/macOS
+# .venv\Scripts\activate    # Windows PowerShell
+```
+
+3. Install dependencies:
+
+```bash
+pip install selenium pynput
+```
+
+4. Verify browser drivers:
+
+- `chromedriver --version`
+- `msedgedriver --version`
+
+Driver versions should match installed browser versions.
+
+---
+
+## Test Environment Assumptions
+
+The current scripts assume:
+
+- The application is available at fixed URLs under `http://182.163.99.86`.
+- Certain UI elements are located via absolute XPath selectors.
+- Some test data exists already (e.g., searchable project/group names).
+- A local upload file path may be required and valid for file-upload test flow.
+
+---
+
+## How to Run
+
+### Run `unittest` scenario (annotator flow)
+
+```bash
+python final2.py
+```
+
+### Use reusable function flow (procedural)
+
+`final1.py` exposes functions that can be called from a custom runner script, for example:
+
+- `Login(...)`
+- `UserCreate(...)`
+- `projectCreate(...)`
+- `File_Upload(...)`
+- `Annotation(...)`
+- `Validation(...)`
+- `Logout()`
+
+If you use `final1.py` directly, create your own orchestration script that imports and calls these functions in sequence according to your scenario.
+
+---
+
+## Test Coverage
+
+The repository is designed around 30 functional test intents across core platform workflows.
+
+### 1) Authentication
+- Invalid login attempts (wrong ID / missing password / missing both)
+- Incomplete ID scenarios
+- Successful login
+- Logout verification
+
+### 2) User Management
+- Create user with missing required fields (role, email, name, etc.)
+- Password rule boundary testing
+- Large input values (name/password)
+- Invalid email and phone formats
+- Duplicate or conflicting user checks
+- User deletion
+
+### 3) Project Management
+- Create project
+- Prevent duplicate project creation
+- Delete project
+
+### 4) File Handling
+- Upload files to project
+- Validate upload interaction path
+
+### 5) Role-Based Workflow
+- Annotator actions
+- Validator actions (with and without edits)
+- Rejected annotator review path
+
+### 6) Admin Operations
+- Configuration actions
+- Data view operations
+
+---
+
+## Known Limitations
+
+Current scripts are functional but include maintainability and robustness risks:
+
+1. **Heavy absolute XPath usage**
+   - UI layout changes can break tests quickly.
+
+2. **Hardcoded URLs and sample data**
+   - Environment switching requires manual edits.
+
+3. **Hardcoded local upload path**
+   - File upload relies on machine-specific location.
+
+4. **Sleep-based synchronization**
+   - `time.sleep(...)` usage can cause flakiness under variable network/app latency.
+
+5. **Mixed browser usage**
+   - `final1.py` uses Edge, while `final2.py` uses Chrome.
+
+6. **Duplicate method name in `final2.py`**
+   - `test_logout` appears twice; one definition overrides the other.
+
+---
+
+## Troubleshooting
+
+### WebDriver launch failures
+- Confirm browser is installed.
+- Confirm matching driver version is installed and in PATH.
+
+### Element not found / timeout errors
+- The UI might have changed; update locators.
+- Increase `WebDriverWait` timeouts if environment is slow.
+- Prefer stable locators (`id`, `name`, `data-testid`) over long XPath chains.
+
+### Upload automation issues
+- Verify the file path exists on your current machine.
+- Confirm OS-level file picker interaction is supported in your execution environment.
+
+### Intermittent flaky results
+- Replace unnecessary `sleep` calls with explicit waits.
+- Add retry logic only where business-safe and deterministic.
+
+---
+
+## Recommendations for Improvement
+
+To evolve this into a production-grade automation suite:
+
+1. **Adopt Page Object Model (POM)** to centralize locators and page actions.
+2. **Move configuration to environment variables** (base URL, credentials, data files).
+3. **Use `pytest` + reporting plugins** (HTML/JUnit) for better CI observability.
+4. **Replace absolute XPath selectors** with resilient locators.
+5. **Split tests by feature and role**, and add setup/teardown isolation.
+6. **Add CI pipeline integration** (GitHub Actions/GitLab CI/Jenkins).
+7. **Introduce test data factories/fixtures** for repeatable, independent test runs.
+8. **Add linting and formatting** (`ruff`, `black`) for maintainability.
+
+---
+
+If you want, I can also generate a **next-step refactor plan** and scaffold a cleaner `tests/` layout with Page Objects and configurable environments.
